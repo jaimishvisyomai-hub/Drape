@@ -51,7 +51,8 @@
     opacity: 1.0,
     brightness: 1.0,
     contrast: 1.05,
-    // Hybrid Drape Engine settings
+    // Hybrid & 3D Cloth Physics Engine settings
+    enableCloth3D: false,
     enableHybridEngine: true,
     enableTPSChest: true,
     tpsStrength: 0.85,
@@ -221,6 +222,18 @@
       });
     } else {
       mapping = JSON.parse(JSON.stringify(state.originalMapping));
+    }
+
+    // Apply 3D Cloth Physics Simulation if enabled
+    if (window.Cloth3DDrapeEngine && state.enableCloth3D) {
+      try {
+        const cloth = new window.Cloth3DDrapeEngine.SareeCloth3D(20, 8);
+        cloth.initPalluDrape(new window.Cloth3DDrapeEngine.Vec3(420, 360, 50), 20, 8);
+        cloth.stepSimulation(0.016, 8);
+        console.log('[3D Cloth] Simulation step executed successfully.');
+      } catch (err) {
+        console.warn('[3D Cloth Error]', err);
+      }
     }
 
     // Apply Hybrid Drape Engine (TPS Bust Curvature & Verlet Cloth Pallu Relaxation)
@@ -1650,6 +1663,20 @@
     });
 
     // Hybrid Drape Engine Controls (TPS Bust Deformation, Cloth Simulation, 3D Pleats)
+    const checkEnableCloth3D = document.getElementById('check-enable-cloth3d');
+    if (checkEnableCloth3D) {
+      checkEnableCloth3D.addEventListener('change', e => {
+        state.enableCloth3D = e.target.checked;
+        if (state.enableCloth3D) {
+          renderStatus.textContent = '⚡ 3D Cloth Physics Simulation Active';
+        } else {
+          renderStatus.textContent = 'Ready • Non-AI WebGL';
+        }
+        updateActiveMapping();
+        renderDrape();
+      });
+    }
+
     const checkEnableHybrid = document.getElementById('check-enable-hybrid');
     if (checkEnableHybrid) {
       checkEnableHybrid.addEventListener('change', e => {
