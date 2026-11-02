@@ -1,0 +1,444 @@
+[
+  {
+    "name": "Swan Beaks Meeting",
+    "src": [
+      332,
+      725
+    ],
+    "tgt": [
+      319,
+      532
+    ],
+    "color": [
+      0,
+      255,
+      255
+    ],
+    "region": "pallu"
+  },
+  {
+    "name": "Lotus Flower Center",
+    "src": [
+      332,
+      785
+    ],
+    "tgt": [
+      320,
+      580
+    ],
+    "color": [
+      0,
+      0,
+      255
+    ],
+    "region": "pallu"
+  },
+  {
+    "name": "Left Swan Wing Tip",
+    "src": [
+      250,
+      740
+    ],
+    "tgt": [
+      254,
+      545
+    ],
+    "color": [
+      0,
+      255,
+      0
+    ],
+    "region": "pallu"
+  },
+  {
+    "name": "Right Swan Wing Tip",
+    "src": [
+      415,
+      740
+    ],
+    "tgt": [
+      386,
+      545
+    ],
+    "color": [
+      0,
+      255,
+      0
+    ],
+    "region": "pallu"
+  },
+  {
+    "name": "Lower Blossom Center",
+    "src": [
+      332,
+      842
+    ],
+    "tgt": [
+      320,
+      624
+    ],
+    "color": [
+      255,
+      128,
+      0
+    ],
+    "region": "pallu"
+  },
+  {
+    "name": "Pallu Upper Stripe (Top Edge)",
+    "src": [
+      332,
+      574
+    ],
+    "tgt": [
+      320,
+      428
+    ],
+    "color": [
+      255,
+      255,
+      0
+    ],
+    "region": "pallu"
+  },
+  {
+    "name": "Pallu Upper Stripe (Bottom Edge)",
+    "src": [
+      332,
+      678
+    ],
+    "tgt": [
+      320,
+      502
+    ],
+    "color": [
+      255,
+      255,
+      0
+    ],
+    "region": "pallu"
+  },
+  {
+    "name": "Pallu Lower Stripe (Top Edge)",
+    "src": [
+      332,
+      874
+    ],
+    "tgt": [
+      320,
+      646
+    ],
+    "color": [
+      255,
+      255,
+      0
+    ],
+    "region": "pallu"
+  },
+  {
+    "name": "Pallu Lower Stripe (Bottom Edge)",
+    "src": [
+      332,
+      982
+    ],
+    "tgt": [
+      320,
+      722
+    ],
+    "color": [
+      255,
+      255,
+      0
+    ],
+    "region": "pallu"
+  },
+  {
+    "name": "Pallu Left Border Top",
+    "src": [
+      78,
+      574
+    ],
+    "tgt": [
+      118,
+      255
+    ],
+    "color": [
+      255,
+      0,
+      255
+    ],
+    "region": "pallu"
+  },
+  {
+    "name": "Pallu Left Border Mid",
+    "src": [
+      78,
+      765
+    ],
+    "tgt": [
+      136,
+      445
+    ],
+    "color": [
+      255,
+      0,
+      255
+    ],
+    "region": "pallu"
+  },
+  {
+    "name": "Pallu Left Border Bottom",
+    "src": [
+      78,
+      982
+    ],
+    "tgt": [
+      142,
+      665
+    ],
+    "color": [
+      255,
+      0,
+      255
+    ],
+    "region": "pallu"
+  },
+  {
+    "name": "Pallu Right Border Bottom",
+    "src": [
+      580,
+      982
+    ],
+    "tgt": [
+      442,
+      560
+    ],
+    "color": [
+      255,
+      0,
+      255
+    ],
+    "region": "pallu"
+  },
+  {
+    "name": "Neckline Border Top",
+    "src": [
+      580,
+      150
+    ],
+    "tgt": [
+      182,
+      185
+    ],
+    "color": [
+      255,
+      0,
+      255
+    ],
+    "region": "chest"
+  },
+  {
+    "name": "Neckline Border Lower",
+    "src": [
+      580,
+      320
+    ],
+    "tgt": [
+      132,
+      230
+    ],
+    "color": [
+      255,
+      0,
+      255
+    ],
+    "region": "chest"
+  },
+  {
+    "name": "Bust Bird Motif Head",
+    "src": [
+      140,
+      226
+    ],
+    "tgt": [
+      128,
+      246
+    ],
+    "color": [
+      0,
+      165,
+      255
+    ],
+    "region": "chest"
+  },
+  {
+    "name": "Bust Bird Wing Tip",
+    "src": [
+      110,
+      245
+    ],
+    "tgt": [
+      105,
+      260
+    ],
+    "color": [
+      0,
+      165,
+      255
+    ],
+    "region": "chest"
+  },
+  {
+    "name": "Shoulder Bird Motif",
+    "src": [
+      140,
+      138
+    ],
+    "tgt": [
+      145,
+      192
+    ],
+    "color": [
+      0,
+      165,
+      255
+    ],
+    "region": "chest"
+  },
+  {
+    "name": "Torso Floral Vine Center",
+    "src": [
+      335,
+      335
+    ],
+    "tgt": [
+      195,
+      345
+    ],
+    "color": [
+      0,
+      255,
+      128
+    ],
+    "region": "torso"
+  },
+  {
+    "name": "Waist Floral Vine Center",
+    "src": [
+      335,
+      480
+    ],
+    "tgt": [
+      190,
+      445
+    ],
+    "color": [
+      0,
+      255,
+      128
+    ],
+    "region": "torso"
+  },
+  {
+    "name": "Skirt Front Vertical Border Top",
+    "src": [
+      78,
+      250
+    ],
+    "tgt": [
+      96,
+      435
+    ],
+    "color": [
+      255,
+      0,
+      255
+    ],
+    "region": "skirt"
+  },
+  {
+    "name": "Skirt Front Vertical Border Mid",
+    "src": [
+      78,
+      420
+    ],
+    "tgt": [
+      84,
+      545
+    ],
+    "color": [
+      255,
+      0,
+      255
+    ],
+    "region": "skirt"
+  },
+  {
+    "name": "Skirt Front Vertical Border Hem",
+    "src": [
+      78,
+      550
+    ],
+    "tgt": [
+      72,
+      670
+    ],
+    "color": [
+      255,
+      0,
+      255
+    ],
+    "region": "skirt"
+  },
+  {
+    "name": "Skirt Pleat Hem Outer Left",
+    "src": [
+      25,
+      550
+    ],
+    "tgt": [
+      28,
+      672
+    ],
+    "color": [
+      0,
+      255,
+      0
+    ],
+    "region": "skirt"
+  },
+  {
+    "name": "Skirt Pleat Hem Fold 1",
+    "src": [
+      50,
+      550
+    ],
+    "tgt": [
+      48,
+      673
+    ],
+    "color": [
+      0,
+      255,
+      0
+    ],
+    "region": "skirt"
+  },
+  {
+    "name": "Skirt Pleat Hem Inner Right",
+    "src": [
+      150,
+      550
+    ],
+    "tgt": [
+      98,
+      675
+    ],
+    "color": [
+      0,
+      255,
+      0
+    ],
+    "region": "skirt"
+  }
+]

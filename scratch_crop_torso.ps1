@@ -1,0 +1,14 @@
+Add-Type -AssemblyName System.Drawing
+function Crop-Image($src, $rect, $dst) {
+    $bmp = [System.Drawing.Bitmap]::FromFile($src)
+    $c = $bmp.Clone($rect, $bmp.PixelFormat)
+    $c.Save($dst, [System.Drawing.Imaging.ImageFormat]::Png)
+    $c.Dispose()
+    $bmp.Dispose()
+}
+
+Crop-Image 'C:\Users\CORE i7\.gemini\antigravity\brain\02f32bd2-18d1-4ceb-a44b-30d096678914\.user_uploaded\media_1793595637172_bc78bab3.jpg' (New-Object System.Drawing.Rectangle(70, 300, 140, 150)) 'crops/sv_waist_torso.png'
+Crop-Image 'C:\Users\CORE i7\.gemini\antigravity\brain\02f32bd2-18d1-4ceb-a44b-30d096678914\.user_uploaded\media_1793595614500_32ba2d80.jpg' (New-Object System.Drawing.Rectangle(60, 240, 120, 130)) 'crops/cur_waist_torso.png'
+
+Write-Host 'Cropped waist & torso.'
+

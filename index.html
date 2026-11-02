@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saree Drape Studio | Real-Time Saree Fitting Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1>Saree Drape Studio</h1>
+          <p class="subtitle">100% Image Preserved • 960:1600 Standard Ratio • Zero AI Latency</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="btn-toggle-diagnostics" class="action-btn" title="View technical pipeline diagnostics">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          Diagnostics
+        </button>
+        <button id="btn-compare" class="action-btn" title="Hold or toggle to compare before/after">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 3h5v5M4 20L21 3m0 13v5h-5m-6-10l-7 7"/>
+          </svg>
+          Compare Base
+        </button>
+        <button id="btn-toggle-calibration" class="action-btn" title="Open Interactive Mesh Calibration Tool" style="border-color: var(--accent-gold); color: var(--accent-gold);">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          Calibration Tool
+        </button>
+        <button id="btn-export" class="action-btn btn-primary" title="Export high-resolution draped image">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+          </svg>
+          Export HD Result
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="workspace">
+      <!-- Left Sidebar: Controls & Upload -->
+      <aside class="control-panel">
+        <!-- Step 0: Drape Template Selector & Manager -->
+        <section class="panel-card" style="border-left: 3px solid var(--accent-gold);">
+          <div class="card-header">
+            <span class="badge" style="background: rgba(212, 163, 71, 0.2); color: var(--accent-gold);">Step 0</span>
+            <h3>Model Drape Template</h3>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <select id="template-select" style="flex: 1; background: #0f172a; color: #f8fafc; border: 1px solid var(--border-color); border-radius: 4px; padding: 6px 8px; font-size: 0.76rem; font-family: inherit;">
+                <option value="default">Standard Nivi Drape (Default)</option>
+              </select>
+              <button id="btn-save-as-template" class="btn-tool" title="Save current calibration as new template" style="padding: 6px 10px; font-size: 0.72rem; font-weight: 700;">+ New</button>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button id="btn-export-template" class="btn-tool" style="flex: 1; font-size: 0.70rem; padding: 4px;">Export Template</button>
+              <button id="btn-import-template-trigger" class="btn-tool" style="flex: 1; font-size: 0.70rem; padding: 4px;">Import Template</button>
+              <input type="file" id="template-import-input" accept=".json" hidden>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 1: Saree Upload & Orientation -->
+        <section class="panel-card">
+          <div class="card-header">
+            <span class="badge">Step 1</span>
+            <h3>Raw Saree Input (100% Preserved)</h3>
+          </div>
+          <div class="upload-zone" id="saree-dropzone">
+            <input type="file" id="saree-input" accept="image/*" hidden>
+            <div class="upload-content">
+              <div class="upload-icon">
+                <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <polyline points="21 15 16 10 5 21"/>
+                </svg>
+              </div>
+              <p><strong>Click to browse</strong> or drag & drop saree photo</p>
+              <span class="upload-hint">100% full content preserved (zero clipping or arbitrary cropping)</span>
+            </div>
+            <div class="upload-preview" id="saree-thumb-container" style="display: none;">
+              <img id="saree-thumb" alt="Uploaded Saree">
+              <button class="remove-btn" id="btn-remove-saree" title="Change saree">×</button>
+            </div>
+          </div>
+
+          <!-- Saree Orientation & Layout Controls -->
+          <div class="orientation-bar">
+            <button id="btn-rotate" class="btn-tool" title="Rotate 90 degrees">Rotate 90°</button>
+            <button id="btn-flip-v" class="btn-tool" title="Flip upside-down">Flip Vertical</button>
+            <button id="btn-flip-h" class="btn-tool" title="Mirror left-to-right">Flip Horizontal</button>
+          </div>
+
+          <!-- Quick Samples -->
+          <div class="sample-strip">
+            <span class="sample-label">Try Preset Styles:</span>
+            <div class="sample-chips">
+              <button class="chip active" data-sample="royal_emerald">
+                <span class="color-dot emerald"></span> Emerald Green
+              </button>
+              <button class="chip" data-sample="uploaded_raw_saree">
+                <span class="color-dot emerald" style="background: linear-gradient(135deg, #104230, #c5a059);"></span> Raw Uploaded Saree
+              </button>
+              <button class="chip" data-sample="kanjivaram_gold_crimson">
+                <span class="color-dot crimson"></span> Crimson Zari
+              </button>
+              <button class="chip" data-sample="midnight_sapphire">
+                <span class="color-dot sapphire"></span> Royal Blue
+              </button>
+              <button class="chip" data-sample="rani_pink">
+                <span class="color-dot pink"></span> Rani Pink
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Development Diagnostics & Visual Quality Check Card -->
+        <section class="panel-card" id="card-diagnostics" style="display: none; border: 1px solid #3b82f6; box-shadow: 0 0 16px rgba(59, 130, 246, 0.15);">
+          <div class="card-header">
+            <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">Quality Checker</span>
+            <h3>Automated Visual Quality & Defect Report</h3>
+          </div>
+          
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+            <!-- Overall Status Header -->
+            <div id="quality-status-banner" style="padding: 8px 12px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; font-size: 0.76rem; font-weight: 700; display: flex; align-items: center; justify-content: space-between;">
+              <span id="quality-status-text">✓ Overall Status: PASSED (No Critical Defects)</span>
+              <button id="btn-run-quality-check" class="btn-tool" style="padding: 4px 8px; font-size: 0.68rem;">Re-check Now</button>
+            </div>
+
+            <!-- Metrics Summary Tiles -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+              <div style="background: #0f172a; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--border-color); text-align: center;">
+                <div style="font-size: 0.64rem; color: var(--text-muted); text-transform: uppercase;">Critical Errors</div>
+                <div id="metric-critical-errors" style="font-size: 1.1rem; font-weight: 800; color: #ef4444;">0</div>
+              </div>
+              <div style="background: #0f172a; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--border-color); text-align: center;">
+                <div style="font-size: 0.64rem; color: var(--text-muted); text-transform: uppercase;">Coverage Issues</div>
+                <div id="metric-coverage-warnings" style="font-size: 1.1rem; font-weight: 800; color: #f59e0b;">0</div>
+              </div>
+              <div style="background: #0f172a; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--border-color); text-align: center;">
+                <div style="font-size: 0.64rem; color: var(--text-muted); text-transform: uppercase;">Texture Warnings</div>
+                <div id="metric-texture-warnings" style="font-size: 1.1rem; font-weight: 800; color: #3b82f6;">0</div>
+              </div>
+            </div>
+
+            <!-- Categorized Issues List Container -->
+            <div style="font-size: 0.72rem; color: var(--text-secondary); max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;" id="quality-issues-list">
+              <!-- Populated dynamically -->
+            </div>
+
+            <!-- Raw JSON Technical Output Toggle -->
+            <details style="font-size: 0.70rem; color: var(--text-muted); background: #0b0f19; border-radius: 4px; padding: 6px;">
+              <summary style="cursor: pointer; font-weight: 600; color: var(--text-secondary);">Raw JSON Technical Diagnostics</summary>
+              <pre id="diag-content" style="margin-top: 6px; max-height: 140px; overflow-y: auto; font-family: monospace; font-size: 0.66rem;"></pre>
+            </details>
+          </div>
+        </section>
+
+        <!-- Interactive Mesh Calibration Studio Card -->
+        <section class="panel-card" id="card-calibration" style="display: none; border: 1px solid var(--accent-gold); box-shadow: 0 0 16px rgba(212, 163, 71, 0.15);">
+          <div class="card-header">
+            <span class="badge" style="background: rgba(212, 163, 71, 0.2); color: var(--accent-gold);">Calibration</span>
+            <h3>Interactive Mesh Editor</h3>
+          </div>
+          
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <label style="font-size: 0.74rem; font-weight: 600; color: var(--text-secondary);">Select Target Mesh Layer:</label>
+              <select id="calib-mesh-select" style="background: #0f172a; color: #f8fafc; border: 1px solid var(--border-color); border-radius: 4px; padding: 6px 8px; font-size: 0.78rem; font-family: inherit;">
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <!-- Calibration Mode Switch -->
+            <div class="toggle-row">
+              <span style="font-weight: 600; color: var(--accent-gold);">Enable Live Point Dragging</span>
+              <label class="switch">
+                <input type="checkbox" id="check-calib-drag">
+                <span class="slider-switch"></span>
+              </label>
+            </div>
+
+            <!-- Edit Target Selector (Destination vs Source UV) -->
+            <div style="display: flex; gap: 6px;">
+              <button class="chip active" id="btn-calib-mode-dst" style="flex: 1; justify-content: center; font-size: 0.72rem;">Destination (Model)</button>
+              <button class="chip" id="btn-calib-mode-src" style="flex: 1; justify-content: center; font-size: 0.72rem;">Source (Fabric UV)</button>
+            </div>
+
+            <div id="calib-selected-info" style="font-size: 0.70rem; color: #cbd5e1; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 4px; font-family: monospace;">
+              Click any mesh control point on the model canvas to select and drag it.
+            </div>
+
+            <!-- Actions: Undo, Redo, Reset, Save, Export -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+              <button id="btn-calib-undo" class="btn-tool" style="padding: 5px 8px; font-size: 0.72rem;">Undo</button>
+              <button id="btn-calib-redo" class="btn-tool" style="padding: 5px 8px; font-size: 0.72rem;">Redo</button>
+              <button id="btn-calib-reset-mesh" class="btn-tool" style="padding: 5px 8px; font-size: 0.72rem;">Reset Layer</button>
+              <button id="btn-calib-restore-orig" class="btn-tool" style="padding: 5px 8px; font-size: 0.72rem;">Restore Original</button>
+            </div>
+
+            <div style="display: flex; gap: 6px; margin-top: 4px;">
+              <button id="btn-calib-save" class="btn-tool" style="flex: 1; background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399; font-weight: 700; padding: 7px;">
+                Save Calibration
+              </button>
+              <button id="btn-calib-export" class="btn-tool" style="flex: 1; background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; color: #60a5fa; font-weight: 700; padding: 7px;">
+                Export JSON
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 2: Saree Mapping & Mask Mode -->
+        <section class="panel-card">
+          <div class="card-header">
+            <span class="badge">Step 2</span>
+            <h3>Saree Drape Configuration</h3>
+          </div>
+          <div class="slider-group">
+            <div class="toggle-row">
+              <span>Solid Drape (No White Body Gaps)</span>
+              <label class="switch">
+                <input type="checkbox" id="check-solid-masks" checked>
+                <span class="slider-switch"></span>
+              </label>
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Pallu Section Location</span>
+              </div>
+              <div class="sample-chips" style="margin-top: 4px;">
+                <button class="chip active" id="btn-pallu-bottom">Pallu at Bottom</button>
+                <button class="chip" id="btn-pallu-top">Pallu at Top</button>
+              </div>
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Pallu Area Height</span>
+                <span id="val-pallu-ratio" class="slider-val">38%</span>
+              </div>
+              <input type="range" id="slider-pallu-ratio" min="20" max="60" value="38">
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Decorative Border Width</span>
+                <span id="val-border-ratio" class="slider-val">16%</span>
+              </div>
+              <input type="range" id="slider-border-ratio" min="6" max="28" value="16">
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Border Scale & Fine Tuning</span>
+                <span id="val-border-scale" class="slider-val">1.0x</span>
+              </div>
+              <input type="range" id="slider-border-scale" min="50" max="180" value="100">
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Border Horizontal Position Offset</span>
+                <span id="val-border-offset" class="slider-val">0.00</span>
+              </div>
+              <input type="range" id="slider-border-offset" min="-15" max="15" value="0">
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Border Side on Fabric</span>
+              </div>
+              <div class="sample-chips" style="margin-top: 4px;">
+                <button class="chip active" id="btn-border-left">Left Side</button>
+                <button class="chip" id="btn-border-right">Right Side</button>
+              </div>
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Pleat Pattern Arrangement</span>
+              </div>
+              <div class="sample-chips" style="margin-top: 4px;">
+                <button class="chip active" id="btn-pleat-progressive" title="Progressive phase shift across body motifs">Progressive Folds</button>
+                <button class="chip" id="btn-pleat-uniform" title="Uniform pattern alignment across folds">Uniform Motif</button>
+              </div>
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Pleats Horizontal Sample Offset</span>
+                <span id="val-pleat-offset" class="slider-val">0.00</span>
+              </div>
+              <input type="range" id="slider-pleat-offset" min="-15" max="15" value="0">
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Mapping Mode</span>
+              </div>
+              <div class="sample-chips" style="margin-top: 4px;">
+                <button class="chip active" id="btn-mode-generalized" title="Covers entire raw saree continuously">Generalized (960:1600)</button>
+                <button class="chip" id="btn-mode-original" title="Uses static coordinates from mapping.json">Original Static</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 2.5: Hybrid Drape Engine (TPS Bust Warp & Cloth Physics) -->
+        <section class="panel-card" style="border-left: 3px solid #3b82f6;">
+          <div class="card-header">
+            <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">Hybrid</span>
+            <h3>Physics & 3D Deformation</h3>
+          </div>
+          <div class="slider-group">
+            <div class="toggle-row">
+              <span style="font-weight: 600;">Enable Hybrid Deformation Engine</span>
+              <label class="switch">
+                <input type="checkbox" id="check-enable-hybrid" checked>
+                <span class="slider-switch"></span>
+              </label>
+            </div>
+
+            <!-- TPS Chest Wrap -->
+            <div class="toggle-row">
+              <span>TPS Bust & Blouse Curvature</span>
+              <label class="switch">
+                <input type="checkbox" id="check-tps-chest" checked>
+                <span class="slider-switch"></span>
+              </label>
+            </div>
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Bust Curvature Strength</span>
+                <span id="val-tps-strength" class="slider-val">85%</span>
+              </div>
+              <input type="range" id="slider-tps-strength" min="10" max="150" value="85">
+            </div>
+
+            <!-- Verlet Cloth Simulation for Pallu -->
+            <div class="toggle-row">
+              <span>Cloth Physics Pallu Drape (aatishb/drape)</span>
+              <label class="switch">
+                <input type="checkbox" id="check-cloth-pallu" checked>
+                <span class="slider-switch"></span>
+              </label>
+            </div>
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Shoulder Sag & Gravity Drape</span>
+                <span id="val-pallu-sag" class="slider-val">45%</span>
+              </div>
+              <input type="range" id="slider-pallu-sag" min="0" max="100" value="45">
+            </div>
+
+            <!-- 3D Accordion Pleats -->
+            <div class="toggle-row">
+              <span>3D Accordion Pleat Folds & Shadows</span>
+              <label class="switch">
+                <input type="checkbox" id="check-pleat-3d" checked>
+                <span class="slider-switch"></span>
+              </label>
+            </div>
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Pleat Relief & Depth</span>
+                <span id="val-pleat-depth" class="slider-val">1.0x</span>
+              </div>
+              <input type="range" id="slider-pleat-depth" min="20" max="200" value="100">
+            </div>
+
+            <!-- Arm & Body Occlusion -->
+            <div class="toggle-row">
+              <span>Model Arm/Hand Occlusion Retention</span>
+              <label class="switch">
+                <input type="checkbox" id="check-arm-occlusion">
+                <span class="slider-switch"></span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 3: Fabric & Lighting Realism -->
+        <section class="panel-card">
+          <div class="card-header">
+            <span class="badge">Step 3</span>
+            <h3>Fabric & Lighting Realism</h3>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Shadow Blend & Folds</span>
+                <span id="val-shadow" class="slider-val">85%</span>
+              </div>
+              <input type="range" id="slider-shadow" min="0" max="100" value="85">
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Fabric Opacity</span>
+                <span id="val-opacity" class="slider-val">100%</span>
+              </div>
+              <input type="range" id="slider-opacity" min="40" max="100" value="100">
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Fabric Brightness</span>
+                <span id="val-brightness" class="slider-val">100%</span>
+              </div>
+              <input type="range" id="slider-brightness" min="60" max="140" value="100">
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-label">
+                <span>Zari Contrast</span>
+                <span id="val-contrast" class="slider-val">105%</span>
+              </div>
+              <input type="range" id="slider-contrast" min="70" max="140" value="105">
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 4: Drape Layers & Inspection (One-by-One Slicing Debugger) -->
+        <section class="panel-card">
+          <div class="card-header">
+            <span class="badge">Step 4</span>
+            <h3>Single Part Slicing Inspector</h3>
+            <div style="display: flex; gap: 8px;">
+              <button id="btn-layers-all-off" class="text-btn">All Off</button>
+              <button id="btn-toggle-all-layers" class="text-btn">All On</button>
+            </div>
+          </div>
+          <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px;">
+            Click <strong>"Solo"</strong> next to any layer to slice and render <em>only that single piece</em> so we can test its exact source cut and placement!
+          </p>
+          <div class="layer-list" id="layer-list">
+            <!-- Populated dynamically with toggleable masks & Solo buttons -->
+          </div>
+        </section>
+
+        <!-- Debug / View Modes -->
+        <section class="panel-card">
+          <div class="card-header">
+            <span class="badge">Debug</span>
+            <h3>Mesh & Coverage Inspector</h3>
+          </div>
+          <div class="toggle-row">
+            <span>Show Mesh Outlines (Color Coded)</span>
+            <label class="switch">
+              <input type="checkbox" id="check-show-wireframe">
+              <span class="slider-switch"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <span>Show Mesh Labels & Sources</span>
+            <label class="switch">
+              <input type="checkbox" id="check-show-labels">
+              <span class="slider-switch"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <span>Show Combined Garment Coverage</span>
+            <label class="switch">
+              <input type="checkbox" id="check-show-coverage">
+              <span class="slider-switch"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <span>Show Mask Outlines</span>
+            <label class="switch">
+              <input type="checkbox" id="check-show-masks">
+              <span class="slider-switch"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <span>Show Source Fabric Polygons</span>
+            <label class="switch">
+              <input type="checkbox" id="check-show-source-polygons">
+              <span class="slider-switch"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <span>Show Uncovered Garment Gaps</span>
+            <label class="switch">
+              <input type="checkbox" id="check-show-uncovered">
+              <span class="slider-switch"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <span>Show Solid Silhouettes (Black/White)</span>
+            <label class="switch">
+              <input type="checkbox" id="check-show-silhouette">
+              <span class="slider-switch"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <span>Show Vertex & Triangle IDs</span>
+            <label class="switch">
+              <input type="checkbox" id="check-show-vertex-ids">
+              <span class="slider-switch"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <span>Show Suspected Seams & Seam Alignments</span>
+            <label class="switch">
+              <input type="checkbox" id="check-show-seams">
+              <span class="slider-switch"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <span>Dark / Black Model Background</span>
+            <label class="switch">
+              <input type="checkbox" id="check-dark-bg" checked>
+              <span class="slider-switch"></span>
+            </label>
+          </div>
+        </section>
+      </aside>
+
+      <!-- Center / Right: Interactive Viewport -->
+      <section class="viewport-area">
+        <div class="viewport-toolbar">
+          <div class="view-status">
+            <span class="status-indicator live"></span>
+            <span id="render-status">Ready • 100% Image Preserved</span>
+          </div>
+
+          <div class="zoom-controls">
+            <button id="btn-zoom-out" class="icon-btn" title="Zoom Out">-</button>
+            <span id="zoom-level">100%</span>
+            <button id="btn-zoom-in" class="icon-btn" title="Zoom In">+</button>
+            <button id="btn-zoom-fit" class="icon-btn" title="Fit to Screen">Fit</button>
+          </div>
+        </div>
+
+        <div class="canvas-viewport" id="viewport-stage">
+          <div class="canvas-wrapper" id="canvas-wrapper">
+            <!-- Base model reference canvas -->
+            <canvas id="base-canvas"></canvas>
+            <!-- WebGL mesh warping canvas -->
+            <canvas id="gl-canvas"></canvas>
+            <!-- Final composited drape canvas with shadows & alpha masks -->
+            <canvas id="composite-canvas"></canvas>
+            <!-- Overlay debug canvas for wireframes -->
+            <canvas id="overlay-canvas"></canvas>
+          </div>
+
+          <!-- Loading overlay -->
+          <div class="loading-overlay" id="loading-overlay">
+            <div class="spinner"></div>
+            <p id="loading-text">Loading Model & Drape Mesh Points...</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="preprocessor.js"></script>
+  <script src="renderer.js"></script>
+  <script src="mapper.js"></script>
+  <script src="drape_hybrid.js"></script>
+  <script src="saree_generator.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
